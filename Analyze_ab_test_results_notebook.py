@@ -17,14 +17,10 @@
 # 
 # A/B tests are very commonly performed by data analysts and data scientists.  It is important that you get some practice working with the difficulties of these 
 # 
-# For this project, you will be working to understand the results of an A/B test run by an e-commerce website.  Your goal is to work through this notebook to help the company understand if they should implement the new page, keep the old page, or perhaps run the experiment longer to make their decision.
-# 
-# **As you work through this notebook, follow along in the classroom and answer the corresponding quiz questions associated with each question.** The labels for each classroom concept are provided for each question.  This will assure you are on the right track as you work through the project, and you can feel more confident in your final submission meeting the criteria.  As a final check, assure you meet all the criteria on the [RUBRIC](https://review.udacity.com/#!/projects/37e27304-ad47-4eb0-a1ab-8c12f60e43d0/rubric).
-# 
+
 # <a id='probability'></a>
 # #### Part I - Probability
 # 
-# To get started, let's import our libraries.
 
 # In[1]:
 
@@ -38,8 +34,7 @@ get_ipython().run_line_magic('matplotlib', 'inline')
 random.seed(42)
 
 
-# `1.` Now, read in the `ab_data.csv` data. Store it in `df`.  **Use your dataframe to answer the questions in Quiz 1 of the classroom.**
-# 
+# `1.` Now, read in the `ab_data.csv` data. Store it in `df`.  
 # a. Read in the dataset and take a look at the top few rows here:
 
 # In[2]:
@@ -93,10 +88,10 @@ n_mis
 df.info()
 
 
-# `2.` For the rows where **treatment** is not aligned with **new_page** or **control** is not aligned with **old_page**, we cannot be sure if this row truly received the new or old page.  Use **Quiz 2** in the classroom to provide how we should handle these rows.  
+# `2.` For the rows where **treatment** is not aligned with **new_page** or **control** is not aligned with **old_page**, 
+#we cannot be sure if this row truly received the new or old page. 
 # 
-# a. Now use the answer to the quiz to create a new dataset that meets the specifications from the quiz.  Store your new dataframe in **df2**.
-
+# a. Now use the answer to the quiz to create a new dataset.  
 # In[8]:
 
 
@@ -116,7 +111,7 @@ df2 = df2.drop(mis_index)
 df2[((df2['group'] == 'treatment') == (df2['landing_page'] == 'new_page')) == False].shape[0]
 
 
-# `3.` Use **df2** and the cells below to answer questions for **Quiz3** in the classroom.
+# `3.` Use **df2** and the cells 
 
 # a. How many unique **user_id**s are in **df2**?
 
@@ -142,7 +137,7 @@ df2[df2.duplicated('user_id')]
 df2.query('user_id == 773192')
 
 
-# d. Remove **one** of the rows with a duplicate **user_id**, but keep your dataframe as **df2**.
+# d. Remove **one** of the rows with a duplicate **user_id**, but keep dataframe as **df2**.
 
 # In[13]:
 
@@ -156,8 +151,7 @@ df2.drop(labels=1899,axis=0,inplace=True)
 df2.query('user_id == 773192')
 
 
-# `4.` Use **df2** in the below cells to answer the quiz questions related to **Quiz 4** in the classroom.
-# 
+
 # a. What is the probability of an individual converting regardless of the page they receive?
 
 # In[15]:
@@ -192,10 +186,8 @@ df2_t.query('converted == 1').user_id.count()/df2_t.user_id.count()
 df2.query('landing_page == "new_page"').user_id.count()/df2.user_id.count()
 
 
-# e. Use the results in the previous two portions of this question to suggest if you think there is evidence that one page leads to more conversions?  Write your response below.
-
 # **The rate of the control group (old page) is higher than the teatment group (new page). But, the difference is just roughly 0.2%.
-# From the data in Q4, the probability that an individual recieved a new page is roughly 50%, this means that it is not possible to be a big difference in conversion with being given more opportunities. **
+# From the data , the probability that an individual recieved a new page is roughly 50%, this means that it is not possible to be a big difference in conversion with being given more opportunities. **
 
 # <a id='ab_test'></a>
 # ### Part II - A/B Test
@@ -204,7 +196,6 @@ df2.query('landing_page == "new_page"').user_id.count()/df2.user_id.count()
 # 
 # However, then the hard question is do you stop as soon as one page is considered significantly better than another or does it need to happen consistently for a certain amount of time?  How long do you run to render a decision that neither page is better than another?  
 # 
-# These questions are the difficult parts associated with A/B tests in general.  
 # 
 # 
 # `1.` For now, consider you need to make the decision just based on all the data provided.  If you want to assume that the old page is better unless the new page proves to be definitely better at a Type I error rate of 5%, what should your null and alternative hypotheses be?  You can state your hypothesis in terms of words or in terms of **$p_{old}$** and **$p_{new}$**, which are the converted rates for the old and new pages.
